@@ -26,8 +26,13 @@ def generate_IP():
     first,second,third,fourth = str(randint(10,255)),str(randint(0,255)),str(randint(0,255)),str(randint(0,255))
     final_ip = '' + first + '.' + second + '.' + third + '.' + fourth
     return final_ip
-def create_Node(t,x,y,ip):
-    t.color('#6FA8DC')
+def create_Node(t,x,y,ip,type):
+    if not type or type == "Default":
+       t.color('#6FA8DC')
+    elif type == "Start":
+       t.color('#eaeded')
+    elif type == "End":
+       t.color('#FF0000')
     t.penup()
     t.goto(x,y)
     t.pendown()
@@ -56,8 +61,8 @@ def handleclick(stuff):
         t.goto(0,0)
         finalpos, startpos = choice(list(set(range(-int(space12.get()) or -400, int(space12.get()) or 400)) - set(np.linspace(-int(space12.get()) or -400, int(space12.get()) or 400)))),0
         startIP, endIP = (space8.get() or generate_IP()),(space10.get() or generate_IP())
-        create_Node(t, startpos,0,startIP)
-        create_Node(t, finalpos,0,endIP)
+        create_Node(t, startpos,0,startIP,"Start")
+        create_Node(t, finalpos,0,endIP,"End")
         t.goto(startpos,startpos)
         for i in range(0,numerodenodes):
             ip_a_ser_utilizado = generate_IP()
@@ -70,7 +75,7 @@ def handleclick(stuff):
             else: 
               incrementX = incrementX + choice(list(set(range(-80, 80)) - set(np.linspace(-80,80)))) # o codigo antigo era capaz de generar distancias demasiado pequenas, ao ponto de haver 2 nodes que estavam juntos
               incrementY = incrementY + choice(list(set(range(-80, 80)) - set(np.linspace(-80,80)))) # com este codigo, o minimo é -80 ou 80 unidades
-            create_Node(t, t.xcor() + incrementX,t.ycor() + incrementY,ip_a_ser_utilizado)
+            create_Node(t, t.xcor() + incrementX,t.ycor() + incrementY,ip_a_ser_utilizado,"Default")
             newpos = (t.xcor(),t.ycor())
             t.color('#eaeded')
             t.penup()
@@ -101,6 +106,13 @@ def handleclick(stuff):
                t.goto(finalpos,0)
                t.penup()
                logBox.insert(index = 'end', text=startIP + " has successfully found a route to " + endIP+ " through " + ips_ja_utilizados[i] + '\n')
+        elif str.lower(space6.get()) == "virtual":
+            t.speed(randrange(1,10))
+            t.color('#FF0000')
+            t.pendown()
+            t.goto(finalpos,0)
+            t.penup()
+            logBox.insert(index = 'end', text=startIP + " has successfully found a route to " + endIP+ " through " + ips_ja_utilizados[i] + '\n')
 
 
 space.pack()
