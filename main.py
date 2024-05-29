@@ -5,7 +5,7 @@ import numpy as np
 
 window = tk.CTk(className="Test")
 window.configure(bg="#4c5844")
-window.geometry("300x600")
+window.geometry("400x600")
 window.resizable(width=False, height=False)
 space = tk.CTkLabel(window,text="   Number of Nodes   ")
 space4 = tk.CTkLabel(window,text="",)
@@ -19,7 +19,7 @@ space11 = tk.CTkLabel(window,text = "  Distance to end node   ")
 space12 = tk.CTkEntry(window)
 nodenumber = tk.CTkOptionMenu(window,width=25,values=['1','2','3','4','5','6','7','8','9','10'])
 logLabel = tk.CTkLabel(window,text = "  Output   ")
-logBox = tk.CTkTextbox(window)
+logBox = tk.CTkTextbox(window,width=400)
 confirm = tk.CTkButton(window,text="Confirm")
 
 def generate_IP():
@@ -62,7 +62,7 @@ def handleclick(stuff):
         for i in range(0,numerodenodes):
             ip_a_ser_utilizado = generate_IP()
             oldpos = (t.xcor(),t.ycor())
-            t.speed(randint(1,10))
+            t.speed(randrange(1,10))
             if str.lower(space6.get()) == "datagrama": 
               incrementX,incrementY = 0,0
               incrementX = incrementX + choice(list(set(range(-200, 200)) - set(np.linspace(-200,200)))) 
@@ -78,24 +78,29 @@ def handleclick(stuff):
             t.pendown()
             t.goto(newpos)
             t.penup()
-           # if ipAnterior == None:
-                # logBox.insert(index = "1",text="Starting node:" + startIP)
-           # else:
-                # logBox.insert(index = "1", text=ipAnterior + "->" + ip_a_ser_utilizado)
+            if ipAnterior == None:
+                logBox.insert(index = "end", text=startIP + " has created a path to " + endIP + " through " + ip_a_ser_utilizado+ '\n')
+            else:
+                if str.lower(space6.get()) == "datagrama":
+                   logBox.insert(index = "end", text=startIP + " has created a path to " + endIP + " through " + ip_a_ser_utilizado+ '\n')
+                else:
+                   logBox.insert(index = "end", text=ipAnterior + " has created a path to " + endIP + " through " + ip_a_ser_utilizado+ '\n')
             ipAnterior = ip_a_ser_utilizado
             if str.lower(space6.get()) == "datagrama": # cria multiplos caminhos
               t.goto(startpos,startpos)
               nodes_in_the_middle.append(newpos)
             ips_ja_utilizados.append(ip_a_ser_utilizado)
+        t.speed(1)
         if str.lower(space6.get()) == "datagrama":  
             for i in range(0,len(nodes_in_the_middle)):
+               t.speed(randrange(1,10))
                t.color('#FF0000')
                t.penup()
                t.goto(nodes_in_the_middle[i])
                t.pendown()
                t.goto(finalpos,0)
                t.penup()
-               # logBox.insert(index = 0, text=ips_ja_utilizados[i] + "->" + endIP)
+               logBox.insert(index = 'end', text=startIP + " has successfully found a route to " + endIP+ " through " + ips_ja_utilizados[i] + '\n')
 
 
 space.pack()
