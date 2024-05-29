@@ -49,6 +49,7 @@ t.getscreen().screensize(600,800)
 
 def handleclick(stuff):
     global ipAnterior
+    logBox.delete("0.0","end")
     if str.lower(space6.get()) == "datagrama" or str.lower(space6.get()) == "virtual":
         listnodes = nodenumber.get()
         numerodenodes = int(listnodes)
@@ -87,7 +88,7 @@ def handleclick(stuff):
                 logBox.insert(index = "end", text=startIP + " has created a path to " + endIP + " through " + ip_a_ser_utilizado+ '\n')
             else:
                 if str.lower(space6.get()) == "datagrama":
-                   logBox.insert(index = "end", text=startIP + " has created a path to " + endIP + " through " + ip_a_ser_utilizado+ '\n')
+                   logBox.insert(index = "end", text=startIP + " has created a (possible) path to " + endIP + " through " + ip_a_ser_utilizado+ '\n')
                 else:
                    logBox.insert(index = "end", text=ipAnterior + " has created a path to " + endIP + " through " + ip_a_ser_utilizado+ '\n')
             ipAnterior = ip_a_ser_utilizado
@@ -96,16 +97,15 @@ def handleclick(stuff):
               nodes_in_the_middle.append(newpos)
             ips_ja_utilizados.append(ip_a_ser_utilizado)
         t.speed(1)
-        if str.lower(space6.get()) == "datagrama":  
-            for i in range(0,len(nodes_in_the_middle)):
-               t.speed(randrange(1,10))
-               t.color('#FF0000')
-               t.penup()
-               t.goto(nodes_in_the_middle[i])
-               t.pendown()
-               t.goto(finalpos,0)
-               t.penup()
-               logBox.insert(index = 'end', text=startIP + " has successfully found a route to " + endIP+ " through " + ips_ja_utilizados[i] + '\n')
+        if str.lower(space6.get()) == "datagrama":
+            t.speed(randrange(1,10))
+            t.color('#FF0000')
+            t.penup()
+            t.goto(min(nodes_in_the_middle, key=lambda point: (point[0]- finalpos)**2 + (point[1]-0)**2))
+            t.pendown()
+            t.goto(finalpos,0)
+            t.penup()
+            # logBox.insert(index = 'end', text=startIP + " has successfully found a fast route to " + endIP+ " through " + ips_ja_utilizados.index(min(nodes_in_the_middle, key=lambda point: (point[0]- finalpos)**2 + (point[1]-0)**2)) + '\n')
         elif str.lower(space6.get()) == "virtual":
             t.speed(randrange(1,10))
             t.color('#FF0000')
