@@ -67,6 +67,8 @@ def handleclick(stuff):
             create_Node(t, t.xcor() + incrementX,t.ycor() + incrementY,ip_a_ser_utilizado)
             newpos = (t.xcor(),t.ycor())
             t.color('#eaeded')
+            t.speed(randint(1,10))
+            t.speed
             t.penup()
             t.goto(oldpos)
             t.pendown()
