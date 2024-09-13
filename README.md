@@ -1,2 +1,2 @@
 # datagram_visualizer_py
-visualizador para python de datagramas e redes virtuais
+python based visualizer for datagrams
